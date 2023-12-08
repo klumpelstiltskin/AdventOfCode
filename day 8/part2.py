@@ -24,25 +24,20 @@ def findNextNode(node_map, node, direction):
         nn = node_map[node][1]
     return(nn)
 
+def traverseUntilToken(_map, _instructions, _start_node):
+    next_node = _start_node
+    count = 0
+    while next_node[2]!='Z':
+        for i in _instructions:
+            count += 1
+            next_node = findNextNode(node_map, next_node, i)
+            if next_node[2]=='Z':
+                return(count)
 
 # Find starting nodes
 next_nodes = [key for key,val in node_map.items() if key[2] == 'A']
 
-next_node = next_nodes[0]
-
-count = 0
-check = [True if n[2]=='Z' else False for n in next_nodes]
-while not all(check):
-    for i in instructions:
-        count += 1
-        for j, node in enumerate(next_nodes):
-            # for next_node in next_nodes:
-            next_nodes[j] = findNextNode(node_map, node, i)
-        # print(next_nodes)
-        check = [True if n[2]=='Z' else False for n in next_nodes]
-        if all(check):
-            break
-    if count%1000 == 0:
-        print(count)
-
-print(count)
+tokenCounts = []
+for j, node in enumerate(next_nodes):
+    tokenCounts.append(traverseUntilToken(node_map, instructions, node))
+print(math.lcm(*tokenCounts))
