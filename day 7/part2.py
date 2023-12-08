@@ -34,7 +34,6 @@ def isFullHouse(hand, jokers):
     card_counts = defaultdict(lambda:0)
     for card in hand:
         card_counts[card] += 1
-    # print(hand, sorted(card_counts.values()), jokers)
     if sorted(card_counts.values()) == [2, 3] or (sorted(card_counts.values()) == [2, 2] and jokers):
         return(True)
     return(False)
@@ -43,7 +42,6 @@ def isThreeOfAKind(hand, jokers):
     card_counts = defaultdict(lambda:0)
     for card in hand:
         card_counts[card] += 1
-    print(hand, len(hand), set(card_counts.values()))
     if set(card_counts.values()) == {1, 3} or (set(card_counts.values()) == {1, 2} and len(hand)==4) or (set(card_counts.values()) == {1} and len(hand)==3):
         return(True)
     return(False)
@@ -60,7 +58,6 @@ def isOnePair(hand, jokers):
     card_counts = defaultdict(lambda:0)
     for card in hand:
         card_counts[card] += 1
-    # print(hand, len(hand), set(card_counts.values()))
     if sorted(card_counts.values()) == [1, 1, 1, 2] or (set(card_counts.values()) == {1} and len(hand)==4):
         return(True)
     return(False)
