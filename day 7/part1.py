@@ -6,13 +6,13 @@ from collections import defaultdict
 CARD_STRENGTHS = ['A', 'K', 'Q', 'J', 'T', '9', '8',
                   '7', '6', '5', '4', '3', '2']
 
-HAND_TYPES = ['FIVE  OF A KIND',
-              'FOUR OF A KIND',
-              'FULL HOUSE',
-              'THREE OF A KIND',
-              'TWO PAIR',
+HAND_TYPES = ['HIGH CARD',
               'ONE PAIR',
-              'HIGH CARD']
+              'TWO PAIR',
+              'THREE OF A KIND',
+              'FULL HOUSE',
+              'FOUR OF A KIND',
+              'FIVE  OF A KIND']
 
 f = open("input.txt", "r")
 string = f.read()
@@ -65,35 +65,37 @@ def isOnePair(hand):
 
 def rankHand(hand):
     if isFiveOfAKind(hand):
-        return(7)
+        return(HAND_TYPES[6])
     elif isFourOfAKind(hand):
-        return(6)
+        return(HAND_TYPES[5])
     elif isFullHouse(hand):
-        return(5)
+        return(HAND_TYPES[4])
     elif isThreeOfAKind(hand):
-        return(4)
+        return(HAND_TYPES[3])
     elif isTwoPair(hand):
-        return(3)
+        return(HAND_TYPES[2])
     elif isOnePair(hand):
-        return(2)
+        return(HAND_TYPES[1])
     # high card
-    return(1)
+    return(HAND_TYPES[0])
 
 hands = []
-# First rank hands based on strength
+# First group hands based on strength
 for line in lines:
     x = line.split(' ')
     rank = rankHand(x[0])
     hands.append({'hand':x[0], 'bid':x[1], 'rank': rank})
 
-strength = 1
-for i in range(1, len(HAND_TYPES) + 1):
-    x = [hand for hand in hands if hand['rank']==i]
-    if(x):
-        newlist = sorted(x, key=lambda d: d['hand'])
-            # rank best hand in same type
-        print(strength, newlist)
-        strength += 1
+rank = 1
+total_winnings = 0
+for i in HAND_TYPES:
+    same_hand_types = [hand for hand in hands if hand['rank']==i]
+    # Check if empty string
+    if(same_hand_types):
+        # Sort each hand by highest strength in each hand type
+        res = sorted([h for h in same_hand_types], key=lambda word: [CARD_STRENGTHS[::-1].index(c) for c in word['hand']])
+        for j in res:
+            total_winnings += int(j['bid']) * rank
+            rank += 1
 
-# for hand in hands:
-#     print(hand)
+print(total_winnings)
