@@ -31,10 +31,10 @@ for line in lines:
     # Compute difference
     diff_list_array = computeDiffListArray(values)
 
-    # Now compute prediction from lists
+    # Now compute reverse prediction from lists
     for i in range(len(diff_list_array) - 1, 0, -1):
-        pred = diff_list_array[i][-1] + diff_list_array[i - 1][-1]
-        diff_list_array[i - 1].append(pred)
+        pred = diff_list_array[i - 1][0] - diff_list_array[i][0]
+        diff_list_array[i - 1].insert(0, pred)
     total += pred
 
 print(total)
